@@ -74,4 +74,74 @@
     font-weight: 900;
     font-style: normal;
   }
+  @font-face {
+    font-family: 'SF Pro Display';
+    src: url('../scss/fonts/SFPRODISPLAYBLACKITALIC.woff2') format('woff2'),
+         url('../scss/fonts/SFPRODISPLAYBLACKITALIC.woff') format('woff');
+    font-weight: 900;
+    font-style: italic;
+  }
+  
+  @font-face {
+    font-family: 'SF Pro Display';
+    src: url('../scss/fonts/SFPRODISPLAYBOLD.woff2') format('woff2'),
+         url('../scss/fonts/SFPRODISPLAYBOLD.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'SF Pro Display';
+    src: url('../scss/fonts/SFPRODISPLAYHEAVYITALIC.woff2') format('woff2'),
+         url('../scss/fonts/SFPRODISPLAYHEAVYITALIC.woff') format('woff');
+    font-weight: 800;
+    font-style: italic;
+  }
+  
+  @font-face {
+    font-family: 'SF Pro Display';
+    src: url('../scss/fonts/SFPRODISPLAYLIGHTITALIC.woff2') format('woff2'),
+         url('../scss/fonts/SFPRODISPLAYLIGHTITALIC.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+  }
+  
+  @font-face {
+    font-family: 'SF Pro Display';
+    src: url('../scss/fonts/SFPRODISPLAYMEDIUM.woff2') format('woff2'),
+         url('../scss/fonts/SFPRODISPLAYMEDIUM.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'SF Pro Display';
+    src: url('../scss/fonts/SFPRODISPLAYREGULAR.woff2') format('woff2'),
+         url('../scss/fonts/SFPRODISPLAYREGULAR.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'SF Pro Display';
+    src: url('../scss/fonts/SFPRODISPLAYSEMIBOLDITALIC.woff2') format('woff2'),
+         url('../scss/fonts/SFPRODISPLAYSEMIBOLDITALIC.woff') format('woff');
+    font-weight: 600;
+    font-style: italic;
+  }
+  
+  @font-face {
+    font-family: 'SF Pro Display';
+    src: url('../scss/fonts/SFPRODISPLAYTHINITALIC.woff2') format('woff2'),
+         url('../scss/fonts/SFPRODISPLAYTHINITALIC.woff') format('woff');
+    font-weight: 100;
+    font-style: italic;
+  }
+  
+  @font-face {
+    font-family: 'SF Pro Display';
+    src: url('../scss/fonts/SFPRODISPLAYULTRALIGHTITALIC.woff') format('woff');
+    font-weight: 200;
+    font-style: italic;
+  }
   

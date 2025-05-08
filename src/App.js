@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 // We use those styles to show code examples, you should remove them in your application.
 import './scss/examples.scss'

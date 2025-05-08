@@ -113,26 +113,6 @@ body {
   color: $secondary-color;
 }
 
-.primary-button {
-  background-color:#000;
-  color: #FFFFFF;
-  border-radius: 8px;
-  box-shadow: 0px 1px 2px 0px #8080801A;
-  font-weight: 600;
-  font-size: 14px;
-  letter-spacing: 0px;
-
-  i {
-    color: #FFFFFF;
-  }
-
-  &:hover {
-    i {
-      color: #000;
-    }
-  }
-}
-
 .nav-feature-card {
   background: #F8FAFC;
   border-radius: 10px;
@@ -223,6 +203,7 @@ a {
     font-family: 'Rawgly';
     text-transform: uppercase;
     font-size: 85px;
+    padding-inline: 7rem;
   }
 
   .hero-text {
@@ -297,6 +278,7 @@ a {
     text-transform: uppercase;
     font-size: 10px;
     letter-spacing: 2px;
+    font-family: 'SF Pro Display';
   }
 
   .card-description {
@@ -309,6 +291,7 @@ a {
   }
 
   .card-title {
+    font-family: 'SF Pro Display';
     display: -webkit-box;
     line-clamp: 1;
     -webkit-line-clamp: 1;
@@ -366,8 +349,64 @@ a {
 .pagination-btn {
   background: #000;
   color: #FFFFFF;
-  &.disabled{
+
+  &.disabled {
     background: #000;
     color: #FFFFFF;
+  }
+}
+
+.profile-title {
+  font-size: 20px;
+  font-weight: 600;
+  font-family: 'SF Pro Display';
+  color: #000;
+}
+
+.profile-description {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.primary-button {
+  background-color: #000 !important;
+  color: #FFFFFF !important;
+  border-radius: 8px !important;
+  box-shadow: 0px 1px 2px 0px #8080801A !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  letter-spacing: 0px;
+
+  i {
+    color: #FFFFFF;
+  }
+
+  &:hover {
+    i {
+      color: #000;
+    }
+  }
+}
+
+.modal-content {
+  border-radius: 20px !important;
+  .modal-header {
+    border-bottom: none !important;
+  }
+
+  .modal-body {
+    text-align: center;
+
+    img {
+      width: 80px;
+      height: auto;
+      border-radius: 16px;
+    }
+  }
+
+  .modal-footer {
+    a {
+      border-radius: 20px !important;
+    }
   }
 }

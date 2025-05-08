@@ -27,15 +27,15 @@ import avatar8 from './../../assets/images/avatars/8.jpg'
 const AppHeaderDropdown = () => {
   return (
     <CDropdown variant="nav-item">
-      <CDropdownToggle placement="bottom-end" className="py-0 pe-0 d-flex" caret={false}>
+      <CDropdownToggle placement="bottom-end" className="py-0 pe-0 d-flex align-items-center" caret={false}>
         <CAvatar src={avatar8} size="md" />
         <div className='d-flex flex-column'>
           <div className='profile-title'>
             Arihant Jain
           </div>
-          <div className=''>
-            <span>
-              Product Designer
+          <div className='profile-description'>
+            <span className='title me-2'>
+              Product Designer 
             </span>
             <span>
               hey@arihantcodes.in

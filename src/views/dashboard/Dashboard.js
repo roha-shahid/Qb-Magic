@@ -1,63 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import classNames from 'classnames'
+import React, { useEffect, useRef, useState } from 'react'
+import { Modal } from 'bootstrap';
 
 import {
-  CAvatar,
   CButton,
-  CButtonGroup,
-  CCard,
-  CCardBody,
-  CCardFooter,
-  CCardHeader,
   CCol,
   CContainer,
   CForm,
   CFormInput,
-  CProgress,
   CRow,
   CTab,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import {
-  cibCcAmex,
-  cibCcApplePay,
-  cibCcMastercard,
-  cibCcPaypal,
-  cibCcStripe,
-  cibCcVisa,
-  cibGoogle,
-  cibFacebook,
-  cibLinkedin,
-  cifBr,
-  cifEs,
-  cifFr,
-  cifIn,
-  cifPl,
-  cifUs,
-  cibTwitter,
-  cilCloudDownload,
-  cilPeople,
-  cilUser,
-  cilUserFemale,
-  cilSearch,
-} from '@coreui/icons'
-
-import avatar1 from 'src/assets/images/avatars/1.jpg'
-import avatar2 from 'src/assets/images/avatars/2.jpg'
-import avatar3 from 'src/assets/images/avatars/3.jpg'
-import avatar4 from 'src/assets/images/avatars/4.jpg'
-import avatar5 from 'src/assets/images/avatars/5.jpg'
-import avatar6 from 'src/assets/images/avatars/6.jpg'
-
-import WidgetsBrand from '../widgets/WidgetsBrand'
-import WidgetsDropdown from '../widgets/WidgetsDropdown'
-import MainChart from './MainChart'
 
 const Dashboard = () => {
   // const progressExample = [
@@ -185,6 +137,8 @@ const Dashboard = () => {
 
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const modalRef = useRef(null);
 
 
   useEffect(() => {
@@ -217,6 +171,28 @@ const Dashboard = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, selectedCategory]);
+
+  const handleColumnClick = (card) => {
+    setSelectedCard(card);
+
+    // Wait for state to update, then show modal
+    setTimeout(() => {
+      if (modalRef.current) {
+        const modalInstance = new Modal(modalRef.current);
+        modalInstance.show();
+      }
+    }, 0);
+  };
+  const modalInstanceRef = useRef(null); // Store Bootstrap modal instance
+
+  useEffect(() => {
+    if (modalRef.current) {
+      modalInstanceRef.current = new Modal(modalRef.current, {
+        backdrop: true,
+        keyboard: true,
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -256,15 +232,6 @@ const Dashboard = () => {
         </CRow>
         <CRow className='my-3'>
           <CCol xs={12} md={12} className='tab-holder'>
-            {/* {
-              [...new Set(cards.map(card => card.category))].map((category, id) => {
-                return (
-                  <CTab className='category-tab tool' key={id}>
-                    {category}
-                  </CTab>
-                )
-              })
-            } */}
             {categories.map((category, id) => (
               <CTab
                 key={id}
@@ -279,27 +246,81 @@ const Dashboard = () => {
         </CRow>
         <CRow>
           {paginatedCards.map((card) => (
-            <CCol md={3} className="mb-4 text-center" key={card.id}>
-              <div className="card tool mx-auto">
-                <div className="card-body">
-                  <div className="card-img my-2 mx-auto">
-                    <img
-                      src={`http://46.250.225.64:4000${card.image}`}
-                      className="card-img-top"
-                      alt={card.title}
-                    />
+            <>
+              <CCol
+                md={3}
+                className="mb-4 text-center"
+                key={card.id}
+                onClick={() => handleColumnClick(card)}
+                style={{ cursor: 'pointer' }}>
+                <div className="card tool mx-auto">
+                  <div className="card-body">
+                    <div className="card-img my-2 mx-auto">
+                      <img
+                        src={`http://46.250.225.64:4000${card.image}`}
+                        className="card-img-top"
+                        alt={card.title}
+                      />
+                    </div>
+                    <div className="category mb-2 mt-4">{card.category}</div>
+                    <h5 className="card-title">{card.title}</h5>
+                    <p className="card-text card-description">
+                      {card.description}
+                    </p>
+                    <button className="btn" onClick={() => handleColumnClick(card)}>
+                      Visit Now
+                    </button>
                   </div>
-                  <div className="category mb-2 mt-4">{card.category}</div>
-                  <h5 className="card-title">{card.title}</h5>
-                  <p className="card-text card-description">
-                    {card.description}
-                  </p>
-                  <a href={card.link} className="btn btn-outline-primary">
-                    Visit Now
-                  </a>
+                </div>
+              </CCol>
+              <div
+                className="modal fade"
+                id="cardModal"
+                tabIndex="-1"
+                aria-hidden="true"
+                aria-labelledby="cardModalLabel"
+                ref={modalRef}
+              >
+                <div className="modal-dialog modal-dialog-centered">
+                  <div className="modal-content">
+                    {selectedCard && (
+                      <>
+                        <div className="modal-header">
+                          <button
+                            type="button"
+                            className="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div className="modal-body">
+                          <img
+                            src={`http://46.250.225.64:4000${selectedCard.image}`}
+                            alt={selectedCard.title}
+                            className="img-fluid mb-3"
+                          />
+                          <h5 className="modal-title" id="cardModalLabel">
+                            {selectedCard.title}
+                          </h5>
+                          <p>{selectedCard.category}</p>
+                          <p>{selectedCard.description}</p>
+                        </div>
+                        <div className="modal-footer border-0 p-0 position-sticky bottom-0 bg-white">
+                          <a
+                            href={selectedCard.link}
+                            className="btn primary-button w-100"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Start
+                          </a>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-            </CCol>
+            </>
           ))}
         </CRow>
 
