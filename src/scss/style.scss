@@ -109,8 +109,8 @@ body {
 .badge-primary {
   border: 1px solid #A5B4FC;
   background: #EEF2FF;
-  border-radius: 1rem;
-  color: $secondary-color;
+  border-radius: 1rem !important;
+  color: $secondary-color !important;
 }
 
 .nav-feature-card {
@@ -160,6 +160,7 @@ a {
 }
 
 .header-nav {
+  align-items: center;
   .input-group {
     border-radius: 16px;
     padding: 0.2rem;
@@ -252,7 +253,15 @@ a {
     }
   }
 }
-
+.nav-dropdown{
+  position: absolute;
+  background: #FFFFFF;
+  width: -webkit-fill-available;
+  border: 1px solid #E6E6E6;
+    box-shadow: 0px 1px 2px 0px rgba(128, 128, 128, 0);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
 
 .tool {
   border: 1px solid #0000001C;
@@ -361,6 +370,7 @@ a {
   font-weight: 600;
   font-family: 'SF Pro Display';
   color: #000;
+  line-height: 1rem;
 }
 
 .profile-description {
