@@ -424,6 +424,10 @@ a {
 
 .drop-box {
   border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20rem;
   padding: 2rem;
   text-align: center;
   margin-bottom: 1rem;
@@ -431,4 +435,87 @@ a {
   cursor: pointer;
   border-top: 1px solid #FFFFFF;
   box-shadow: 0px 16.42px 33.62px 0px #0000001f;
+}
+
+.file-holder{
+  font-weight: 400;
+  font-family: 'SF Pro Rounded';
+}
+.secondary-button{
+  display: inline-flex !important;
+  align-items: center;
+  background: #4285F4;
+  color: white;
+  border-radius: 12px;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  margin-bottom: 0.8rem;
+  .plus-icon{
+    background: #FFFFFF26;
+    color: white;
+    border-radius: 12px;
+    padding: 0.2rem;
+    line-height: 0;
+    margin-right: 0.5rem;
+    svg{
+      font-size: 0.5rem !important;
+    }
+  }
+}
+.tool-head{
+  font-weight: 700;
+  font-family: 'SF Pro Display';
+  font-size: 70px;
+  color: #000;
+  letter-spacing: -1.5px;
+}
+.tool-description{
+  color: #707177;
+  font-family: 'SF Pro Display';
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.result-section{
+  padding: 3rem !important;
+  height: 20rem;
+  width: 25rem;
+  position: relative;
+  img{
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.recent-img{
+  position: relative;
+  div{
+    width: 3rem;
+    position: relative;
+    height: 3rem;
+    border-radius: 12px;
+    img{
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+    }
+  }
+  .add-image{
+    background-color: #4285F4;
+    display: flex;
+    color: white;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+a{
+  text-decoration: none !important;
+}
+
+
+form{
+  font-family: 'SF Pro Rounded';
 }

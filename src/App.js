@@ -1,14 +1,14 @@
 import React, { Suspense, useEffect } from 'react'
-import { HashRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
 // We use those styles to show code examples, you should remove them in your application.
 import './scss/examples.scss'
+import Result from './components/Result';
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
@@ -38,7 +38,7 @@ const App = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Suspense
         fallback={
           <div className="pt-3 text-center">
@@ -47,6 +47,7 @@ const App = () => {
         }
       >
         <Routes>
+          <Route exact path='/result' name='Tool Result' element={<Result />} />
           <Route exact path="/login" name="Login Page" element={<Login />} />
           <Route exact path="/register" name="Register Page" element={<Register />} />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
@@ -54,7 +55,7 @@ const App = () => {
           <Route path="*" name="Home" element={<DefaultLayout />} />
         </Routes>
       </Suspense>
-    </HashRouter>
+    </BrowserRouter>
   )
 }
 

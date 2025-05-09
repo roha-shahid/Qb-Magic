@@ -1,5 +1,6 @@
 import React from 'react'
 import Tool from './components/Tool'
+import { exact } from 'prop-types'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -79,7 +80,7 @@ const routes = [
   { path: '/buttons/buttons', name: 'Buttons', element: Buttons },
   { path: '/buttons/dropdowns', name: 'Dropdowns', element: Dropdowns },
   { path: '/buttons/button-groups', name: 'Button Groups', element: ButtonGroups },
-  { path: '/charts', name: 'Charts', element: Charts },
+  { path: '/charts', name: 'Charts', element: Charts, exact: true},
   { path: '/forms', name: 'Forms', element: FormControl, exact: true },
   { path: '/forms/form-control', name: 'Form Control', element: FormControl },
   { path: '/forms/select', name: 'Select', element: Select },

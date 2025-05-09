@@ -104,7 +104,7 @@ const AppHeaderDropdown = () => {
         >
           {/* Profile Header */}
           <motion.div
-            className="p-4"
+            className="p-1"
             transition={{ duration: 0.2 }}
           >
             <div className="d-flex align-items-center">

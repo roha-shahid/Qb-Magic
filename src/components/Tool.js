@@ -1,132 +1,199 @@
-import React, { useState } from 'react'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { cilPlus } from '@coreui/icons';
+import CIcon from '@coreui/icons-react';
 
 const Tool = () => {
-  const [file, setFile] = useState(null)
-  const [colorOption, setColorOption] = useState('bw')
-  const [resultUrl, setResultUrl] = useState('')
-  const [error, setError] = useState('')
+  const [file, setFile] = useState(null);
+  const [colorOption, setColorOption] = useState('bw');
+  const [recentImages, setRecentImages] = useState([]);
+  const [error, setError] = useState('');
+  const [imageUrl, setImageUrl] = useState(null); // State to hold the result image URL
 
   const handleFileChange = (e) => {
-    const selected = e.target.files[0]
+    const selected = e.target.files[0];
     if (selected && selected.type.startsWith('image/')) {
-      setFile(selected)
-      setError('')
+      setFile(selected);
+      setError('');
+      const imageUrl = URL.createObjectURL(selected);
+      setRecentImages((prev) => [imageUrl, ...prev.slice(0, 4)]);
     } else {
-      setError('Please upload a valid image.')
+      setError('Please upload a valid image.');
     }
-  }
+  };
 
   const handleDrop = (e) => {
-    e.preventDefault()
-    const droppedFile = e.dataTransfer.files[0]
+    e.preventDefault();
+    const droppedFile = e.dataTransfer.files[0];
     if (droppedFile && droppedFile.type.startsWith('image/')) {
-      setFile(droppedFile)
-      setError('')
+      setFile(droppedFile);
+      setError('');
+      const imageUrl = URL.createObjectURL(droppedFile);
+      setRecentImages((prev) => [imageUrl, ...prev.slice(0, 4)]);
     } else {
-      setError('Please drop a valid image file.')
+      setError('Please drop a valid image file.');
     }
-  }
+  };
 
-  const handleDragOver = (e) => e.preventDefault()
-
-  const handleOptionChange = (e) => setColorOption(e.target.value)
+  const handleDragOver = (e) => e.preventDefault();
+  const handleOptionChange = (e) => setColorOption(e.target.value);
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!file) {
-      setError('Please upload an image.')
-      return
+      setError('Please upload an image.');
+      return;
     }
 
-    const formData = new FormData()
-    formData.append('image', file)
-    formData.append('color_option', colorOption)
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('color_option', colorOption);
 
     try {
-      const response = await axios.post('http://your-django-backend-url/api/cropper/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
+      const response = await axios.post('http://46.250.225.64:4000/cropper/', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
 
       if (response.data.cropped_image_url) {
-        setResultUrl(response.data.cropped_image_url)
-        setError('')
+        const fullUrl = `http://46.250.225.64:4000${response.data.cropped_image_url}`;
+        setImageUrl(fullUrl); // Set the result image URL
       } else {
-        setError('Image processing failed.')
+        setError('Image processing failed.');
       }
     } catch (err) {
-      console.error(err)
-      setError(err.response?.data?.error || 'Something went wrong.')
+      console.error(err);
+      setError(err.response?.data?.error || 'Something went wrong.');
     }
-  }
+  };
 
+  // inside Tool component
+  useEffect(() => {
+    const handleWindowDrop = (e) => {
+      e.preventDefault();
+      const file = e.dataTransfer.files?.[0];
+      if (file && file.type.startsWith('image/')) {
+        setFile(file);
+        setError('');
+        const imageUrl = URL.createObjectURL(file);
+        setRecentImages((prev) => [imageUrl, ...prev.slice(0, 4)]);
+      } else {
+        setError('Please drop a valid image file.');
+      }
+    };
+
+    const preventDefaults = (e) => e.preventDefault();
+
+    window.addEventListener('dragover', preventDefaults);
+    window.addEventListener('drop', handleWindowDrop);
+
+    return () => {
+      window.removeEventListener('dragover', preventDefaults);
+      window.removeEventListener('drop', handleWindowDrop);
+    };
+  }, []);
+
+  const handleDownload = async (imageUrl) => {
+    try {
+      const response = await fetch(imageUrl, { mode: 'cors' });
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+  
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'cropped_image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url); // Clean up the URL object
+    } catch (error) {
+      console.error('Download failed', error);
+    }
+  };
+  
+  
   return (
-    <div className='text-center' style={{ maxWidth: 500, margin: '0 auto', padding: '1rem' }}>
-      <h2>Background Remover</h2>
-      <div>
-        Erase image backgrounds for free and replace it with different backgrounds of your choosing.
-      </div>
-      {/* Drag & Drop area */}
-      <div
-      className='drop-box'
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        onClick={() => document.getElementById('fileInput').click()}
-      >
-        {file ? (
-          <strong>{file.name}</strong>
-        ) : (
-          <p>
-            Drag & Drop image here or 
-            <span style={{ color: '#007bff' }}>click to select</span>
-          </p>
-        )}
-      </div>
+    <>
+      <div className='row'>
+        <div className='col-12'>
+          <div className='text-center mx-auto' style={{ maxWidth: 800 }}>
+            <h2 className='text-capitalize tool-head'>Background Remover</h2>
+            <div className='tool-description'>
+              Erase image backgrounds for free and replace it with different backgrounds of your choosing.
+            </div>
 
-      {/* Hidden file input */}
-      <input
-        id="fileInput"
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        style={{ display: 'none' }}
-      />
+            {/* Conditionally render the form or the result */}
+            {imageUrl ? (
+              <div className="text-center p-4 mx-auto result-section">
+                {/* <h2 className='tool-head'>Background Removed Result</h2> */}
+                <img src={imageUrl} alt="Result" />
+                <br />
+                <button className="secondary-button mt-4" onClick={() => handleDownload(imageUrl)}>
+                  Download Image
+                </button>
+              </div>
+            ) : (
+              <div className='row'>
+                <div
+                  className='drop-box col-10 mt-3'
+                  onDrop={handleDrop}
+                  onDragOver={handleDragOver}
+                  onClick={() => document.getElementById('fileInput').click()}
+                >
+                  {file ? (
+                    <strong>{file.name}</strong>
+                  ) : (
+                    <div className='file-holder'>
+                      <button className='secondary-button'>
+                        <span className='plus-icon'>
+                          <CIcon icon={cilPlus} />
+                        </span>
+                        Start from a photo
+                      </button>
+                      <div>Or drop an image here</div>
+                    </div>
+                  )}
+                </div>
+                <div className='recent-img col-2 d-flex flex-column align-items-center'>
+                  <div className='add-image mb-3' onClick={() => document.getElementById('fileInput').click()}>
+                    <CIcon icon={cilPlus} size="lg" />
+                  </div>
+                  <div>
+                    {recentImages.map((img, index) => (
+                      <img key={index} src={img} alt={`Recent ${index}`} className='recent-thumbnail mb-2' />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
 
-      <form onSubmit={handleSubmit}>
-        <label>
-          Background Option:
-          <select
-            value={colorOption}
-            onChange={handleOptionChange}
-            style={{ marginLeft: '10px', marginBottom: '1rem' }}
-          >
-            <option value="bw">Black & White</option>
-            <option value="color">Color</option>
-          </select>
-        </label>
-        <br />
-        <button type="submit" style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}>
-          Submit
-        </button>
-      </form>
+            <input id="fileInput" type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
 
-      {error && <p style={{ color: 'red', marginTop: '1rem' }}>{error}</p>}
+            {!imageUrl && (
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="colorSelect" className="form-label fw-bold">
+                    Background Option:
+                  </label>
+                  <select id="colorSelect" className="form-select" value={colorOption} onChange={handleOptionChange}>
+                    <option value="bw">Black & White</option>
+                    <option value="color">Color</option>
+                  </select>
+                </div>
 
-      {resultUrl && (
-        <div style={{ marginTop: '2rem' }}>
-          <h4>Result:</h4>
-          <img
-            src={resultUrl}
-            alt="Cropped Output"
-            style={{ maxWidth: '100%', borderRadius: '8px' }}
-          />
+                <button className="btn btn-primary mt-3" type="submit">
+                  Submit
+                </button>
+              </form>
+            )}
+
+            {error && <p style={{ color: 'red', marginTop: '1rem' }}>{error}</p>}
+          </div>
         </div>
-      )}
-    </div>
-  )
-}
+      </div>
 
-export default Tool
+    </>
+  );
+};
+
+export default Tool;
