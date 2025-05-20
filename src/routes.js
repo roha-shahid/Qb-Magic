@@ -1,11 +1,12 @@
 import React from 'react'
-import Tool from './components/Tool'
+// import BgRemover from './components/BgRemover'
 import { exact } from 'prop-types'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
-const Tools = React.lazy(() => import('./components/Tool'))
+const BgRemover = React.lazy(() => import('./components/Tools/BgRemover'))
+const Auditor = React.lazy(() => import('./components/Tools/Auditor'))
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
@@ -57,7 +58,8 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard, exact: true },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
-  { path: '/tool', name: 'Tool', element: Tools, exact: true },
+  { path: '/cropper', name: 'BgRemover', element: BgRemover, exact: true },
+  { path: '/solidity_auditor', name: 'Auditor', element: Auditor, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
   { path: '/base', name: 'Base', element: Cards, exact: true },

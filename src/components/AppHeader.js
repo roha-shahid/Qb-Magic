@@ -16,6 +16,7 @@ import {
   CNavItem,
   CButton,
   useColorModes,
+  CCollapse,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import {
@@ -49,30 +50,19 @@ const AppHeader = () => {
 
   return (
     <CHeader position="sticky" className="p-0" ref={headerRef}>
-      <CContainer className="border-bottom px-4" fluid>
+      <CContainer className="border-bottom px-4 py-2" fluid>
+        {/* Sidebar Toggle */}
         <CHeaderToggler
           onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
           style={{ marginInlineStart: '-14px' }}
         >
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
-        {/* <CHeaderNav className="d-none d-md-flex">
-          <CNavItem>
-            <CNavLink to="/dashboard" as={NavLink}>
-              Dashboard
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">Users</CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">Settings</CNavLink>
-          </CNavItem>
-        </CHeaderNav> */}
+
+        {/* Search Bar (Hidden on small screens) */}
         <CHeaderNav className="d-none d-md-flex">
           <CForm className="d-flex">
             <div className="input-group">
-              {/* Search Icon inside Input */}
               <span className="input-group-text search-input">
                 <CIcon icon={cilSearch} />
               </span>
@@ -81,46 +71,37 @@ const AppHeader = () => {
                 placeholder="Search..."
                 aria-label="Search"
               />
-              {/* Button on the right side of the input */}
-              <CButton type="submit">
-                ⌘K
-              </CButton>
+              <CButton type="submit">⌘K</CButton>
             </div>
           </CForm>
         </CHeaderNav>
 
-        <CHeaderNav className="ms-auto align-itemns-center d-flex">
-          <CNavItem>
+        {/* Right side nav items */}
+        <CHeaderNav className="ms-auto align-items-center d-flex">
+          <CNavItem className="d-none d-md-block">
             <CNavLink href="#">
               <i className="bi bi-bell-fill fs-5"></i>
             </CNavLink>
           </CNavItem>
-          <CNavItem>
+          <CNavItem className="d-none d-md-block">
             <CNavLink href="#">
               <i className="bi bi-question-circle-fill fs-5"></i>
             </CNavLink>
           </CNavItem>
-          <CNavItem className="d-flex align-items-center">
-            <CButton className='primary-button'>
+          <CNavItem className="d-none d-md-flex align-items-center">
+            <CButton className="primary-button">
               <i className="bi bi-star-fill me-2"></i>
               Upgrade
             </CButton>
           </CNavItem>
-          {/* <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilList} size="lg" />
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilEnvelopeOpen} size="lg" />
-            </CNavLink>
-          </CNavItem> */}
         </CHeaderNav>
+
+        {/* Theme Toggle + Profile Dropdown */}
         <CHeaderNav>
-          <li className="nav-item py-1">
+          <li className="nav-item py-1 d-none d-md-block">
             <div className="vr h-100 mx-2 text-body text-opacity-75"></div>
           </li>
+
           <CDropdown variant="nav-item" placement="bottom-end">
             <CDropdownToggle caret={false}>
               {colorMode === 'dark' ? (
@@ -161,12 +142,15 @@ const AppHeader = () => {
               </CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
-          <li className="nav-item py-1">
+
+          <li className="nav-item py-1 d-none d-md-block">
             <div className="vr h-100 mx-2 text-body text-opacity-75"></div>
           </li>
+
           <AppHeaderDropdown />
         </CHeaderNav>
       </CContainer>
+
       <CContainer className="px-4" fluid>
         <AppBreadcrumb />
       </CContainer>

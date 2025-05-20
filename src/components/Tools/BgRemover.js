@@ -3,7 +3,7 @@ import axios from 'axios';
 import { cilPlus } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 
-const Tool = () => {
+const BgRemover = () => {
   const [file, setFile] = useState(null);
   const [colorOption, setColorOption] = useState('bw');
   const [recentImages, setRecentImages] = useState([]);
@@ -67,7 +67,7 @@ const Tool = () => {
     }
   };
 
-  // inside Tool component
+  // inside BgRemover component
   useEffect(() => {
     const handleWindowDrop = (e) => {
       e.preventDefault();
@@ -111,13 +111,18 @@ const Tool = () => {
     }
   };
   
-  
   return (
     <>
-      <div className='row'>
+    <div className='container px-5'>
+    <div className='row'>
         <div className='col-12'>
-          <div className='text-center mx-auto' style={{ maxWidth: 800 }}>
-            <h2 className='text-capitalize tool-head'>Background Remover</h2>
+          <div className='text-center mx-auto'>
+            <div className='d-inline-flex gap-1 align-items-center justify-content-center'>
+              <div className='image-holder'>
+              <img src='../../src/assets/images/bgRemover.png' />
+              </div>
+            <h2 className='text-capitalize tool-head flex-1'>Background Remover</h2>
+            </div>
             <div className='tool-description'>
               Erase image backgrounds for free and replace it with different backgrounds of your choosing.
             </div>
@@ -125,7 +130,6 @@ const Tool = () => {
             {/* Conditionally render the form or the result */}
             {imageUrl ? (
               <div className="text-center p-4 mx-auto result-section">
-                {/* <h2 className='tool-head'>Background Removed Result</h2> */}
                 <img src={imageUrl} alt="Result" />
                 <br />
                 <button className="secondary-button mt-4" onClick={() => handleDownload(imageUrl)}>
@@ -135,7 +139,7 @@ const Tool = () => {
             ) : (
               <div className='row'>
                 <div
-                  className='drop-box col-10 mt-3'
+                  className='drop-box col-12 mt-3'
                   onDrop={handleDrop}
                   onDragOver={handleDragOver}
                   onClick={() => document.getElementById('fileInput').click()}
@@ -154,11 +158,11 @@ const Tool = () => {
                     </div>
                   )}
                 </div>
-                <div className='recent-img col-2 d-flex flex-column align-items-center'>
+                <div className='recent-img col-12 d-flex justify-content-center py-3 gap-3'>
                   <div className='add-image mb-3' onClick={() => document.getElementById('fileInput').click()}>
                     <CIcon icon={cilPlus} size="lg" />
                   </div>
-                  <div>
+                  <div className=" d-flex gap-3">
                     {recentImages.map((img, index) => (
                       <img key={index} src={img} alt={`Recent ${index}`} className='recent-thumbnail mb-2' />
                     ))}
@@ -191,9 +195,10 @@ const Tool = () => {
           </div>
         </div>
       </div>
+    </div>
 
     </>
   );
 };
 
-export default Tool;
+export default BgRemover;

@@ -8,7 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 // We use those styles to show code examples, you should remove them in your application.
 import './scss/examples.scss'
-import Result from './components/Result';
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
@@ -47,7 +46,6 @@ const App = () => {
         }
       >
         <Routes>
-          <Route exact path='/result' name='Tool Result' element={<Result />} />
           <Route exact path="/login" name="Login Page" element={<Login />} />
           <Route exact path="/register" name="Register Page" element={<Register />} />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />

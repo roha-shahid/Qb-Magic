@@ -1,15 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Modal } from 'bootstrap';
+import { Modal } from 'bootstrap'
 
-import {
-  CButton,
-  CCol,
-  CContainer,
-  CForm,
-  CFormInput,
-  CRow,
-  CTab,
-} from '@coreui/react'
+import { CButton, CCol, CContainer, CForm, CFormInput, CRow, CTab } from '@coreui/react'
+import { Link } from 'react-router-dom'
 
 const Dashboard = () => {
   // const progressExample = [
@@ -132,85 +125,72 @@ const Dashboard = () => {
   //     activity: 'Last week',
   //   },
   // ]
-  const [cards, setCards] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('All'); const [searchTerm, setSearchTerm] = useState('');
+  const [cards, setCards] = useState([])
+  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [searchTerm, setSearchTerm] = useState('')
 
-  const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCard, setSelectedCard] = useState(null);
-  const modalRef = useRef(null);
-
+  const [error, setError] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [selectedCard, setSelectedCard] = useState(null)
+  const modalRef = useRef(null)
 
   useEffect(() => {
     fetch('http://46.250.225.64:4000/get_tools/')
-      .then(res => res.json())
-      .then(data => {
-        setCards(data);
+      .then((res) => res.json())
+      .then((data) => {
+        setCards(data)
       })
-      .catch(err => {
-        console.error('Error:', err);
-        setError('Failed to fetch cards');
-      });
-  }, []);
+      .catch((err) => {
+        console.error('Error:', err)
+        setError('Failed to fetch cards')
+      })
+  }, [])
   const categories = ['All', ...new Set(cards.map((card) => card.category))]
 
   const filteredCards = cards.filter((card) => {
-    const matchesCategory =
-      selectedCategory === 'All' || card.category === selectedCategory
+    const matchesCategory = selectedCategory === 'All' || card.category === selectedCategory
     const matchesSearch = card.title.toLowerCase().includes(searchTerm.toLowerCase())
     return matchesCategory && matchesSearch
   })
 
-
   // Pagination logic
-  const cardsPerPage = 8;
-  const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
-  const startIndex = (currentPage - 1) * cardsPerPage;
-  const paginatedCards = filteredCards.slice(startIndex, startIndex + cardsPerPage);
+  const cardsPerPage = 8
+  const totalPages = Math.ceil(filteredCards.length / cardsPerPage)
+  const startIndex = (currentPage - 1) * cardsPerPage
+  const paginatedCards = filteredCards.slice(startIndex, startIndex + cardsPerPage)
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, selectedCategory]);
+    setCurrentPage(1)
+  }, [searchTerm, selectedCategory])
 
   const handleColumnClick = (card) => {
-    setSelectedCard(card);
-
-    // Wait for state to update, then show modal
+    setSelectedCard(card)
     setTimeout(() => {
-      if (modalRef.current) {
-        const modalInstance = new Modal(modalRef.current);
-        modalInstance.show();
-      }
-    }, 0);
-  };
-  const modalInstanceRef = useRef(null); // Store Bootstrap modal instance
+      modalInstanceRef.current?.show()
+    }, 0)
+  }
+
+  const modalInstanceRef = useRef(null) // Store Bootstrap modal instance
 
   useEffect(() => {
     if (modalRef.current) {
       modalInstanceRef.current = new Modal(modalRef.current, {
         backdrop: true,
         keyboard: true,
-      });
+      })
     }
-  }, []);
+  }, [])
 
   return (
     <>
-
-      <CContainer className='my-5'>
+      <CContainer className="my-5">
         <CRow>
-          <CCol xs className='text-center hero-section'>
-            <h1 className='hero-header'>
-              The Ultimate
-              Ai TOOLS DIRECTORY
-            </h1>
-            <p className='hero-text py-4'>
+          <CCol xs className="text-center hero-section">
+            <h1 className="hero-header">The Ultimate Ai TOOLS DIRECTORY</h1>
+            <p className="hero-text py-4">
               Search Our Directory Of Ai Tools Adn Resources To Accelerate Your Project And Workflow
             </p>
-            <CForm
-              className="d-flex hero-search mb-5 px-5"
-              onSubmit={(e) => e.preventDefault()}
-            >
+            <CForm className="d-flex hero-search mb-5 px-5" onSubmit={(e) => e.preventDefault()}>
               <div className="input-group">
                 <span className="input-group-text search-input">
                   <i className="bi bi-search"></i>
@@ -227,16 +207,16 @@ const Dashboard = () => {
                 Search <i className="bi bi-arrow-return-left"></i>
               </CButton>
             </CForm>
-
           </CCol>
         </CRow>
-        <CRow className='my-3'>
-          <CCol xs={12} md={12} className='tab-holder'>
+        <CRow className="my-3">
+          <CCol xs={12} md={12} className="tab-holder">
             {categories.map((category, id) => (
               <CTab
                 key={id}
-                className={`category-tab tool px-3 py-2 ${selectedCategory === category ? 'selected' : ''
-                  }`}
+                className={`category-tab tool px-3 py-2 ${
+                  selectedCategory === category ? 'selected' : ''
+                }`}
                 onClick={() => setSelectedCategory(category)}
               >
                 {category}
@@ -252,7 +232,8 @@ const Dashboard = () => {
                 className="mb-4 text-center"
                 key={card.id}
                 onClick={() => handleColumnClick(card)}
-                style={{ cursor: 'pointer' }}>
+                style={{ cursor: 'pointer' }}
+              >
                 <div className="card tool mx-auto">
                   <div className="card-body">
                     <div className="card-img my-2 mx-auto">
@@ -264,67 +245,63 @@ const Dashboard = () => {
                     </div>
                     <div className="category mb-2 mt-4">{card.category}</div>
                     <h5 className="card-title">{card.title}</h5>
-                    <p className="card-text card-description">
-                      {card.description}
-                    </p>
+                    <p className="card-text card-description">{card.description}</p>
                     <button className="btn" onClick={() => handleColumnClick(card)}>
                       Visit Now
                     </button>
                   </div>
                 </div>
               </CCol>
-              <div
-                className="modal fade"
-                id="cardModal"
-                tabIndex="-1"
-                aria-hidden="true"
-                aria-labelledby="cardModalLabel"
-                ref={modalRef}
-              >
-                <div className="modal-dialog modal-dialog-centered">
-                  <div className="modal-content">
-                    {selectedCard && (
-                      <>
-                        <div className="modal-header">
-                          <button
-                            type="button"
-                            className="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                          ></button>
-                        </div>
-                        <div className="modal-body">
-                          <img
-                            src={`http://46.250.225.64:4000${selectedCard.image}`}
-                            alt={selectedCard.title}
-                            className="img-fluid mb-3"
-                          />
-                          <h5 className="modal-title" id="cardModalLabel">
-                            {selectedCard.title}
-                          </h5>
-                          <p>{selectedCard.category}</p>
-                          <p>{selectedCard.description}</p>
-                        </div>
-                        <div className="modal-footer border-0 p-0 position-sticky bottom-0 bg-white">
-                          <a
-                            href={selectedCard.link}
-                            className="btn primary-button w-100"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Start
-                          </a>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
             </>
           ))}
         </CRow>
-
-        <CRow classNames='pt-5'>
+        <div
+          className="modal fade"
+          id="cardModal"
+          tabIndex="-1"
+          aria-hidden="true"
+          aria-labelledby="cardModalLabel"
+          ref={modalRef}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              {selectedCard && (
+                <>
+                  <div className="modal-header">
+                    <button
+                      type="button"
+                      className="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div className="modal-body">
+                    <img
+                      src={`http://46.250.225.64:4000${selectedCard.image}`}
+                      alt={selectedCard.title}
+                      className="img-fluid mb-3"
+                    />
+                    <h5 className="modal-title" id="cardModalLabel">
+                      {selectedCard.title}
+                    </h5>
+                    <p>{selectedCard.category}</p>
+                    <p>{selectedCard.description}</p>
+                  </div>
+                  <div className="modal-footer border-0 p-0 position-sticky bottom-0 bg-white">
+                    <Link
+                      to={selectedCard.link}
+                      className="btn primary-button w-100"
+                      // target="_blank"
+                    >
+                      Start
+                    </Link>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+        <CRow classNames="pt-5">
           <CCol>
             <div className="d-flex justify-content-center mt-4">
               <CButton
@@ -334,221 +311,20 @@ const Dashboard = () => {
               >
                 Prev
               </CButton>
-              <span className="align-self-center px-3">Page {currentPage} of {totalPages}</span>
+              <span className="align-self-center px-3">
+                Page {currentPage} of {totalPages}
+              </span>
               <CButton
-                className='pagination-btn'
+                className="pagination-btn"
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
               >
                 Next
               </CButton>
             </div>
-
           </CCol>
         </CRow>
       </CContainer>
-      {/* <WidgetsDropdown className="mb-4" />
-      <CCard className="mb-4">
-        <CCardBody>
-          <CRow>
-            <CCol sm={5}>
-              <h4 id="traffic" className="card-title mb-0">
-                Traffic
-              </h4>
-              <div className="small text-body-secondary">January - July 2023</div>
-            </CCol>
-            <CCol sm={7} className="d-none d-md-block">
-              <CButton color="primary" className="float-end">
-                <CIcon icon={cilCloudDownload} />
-              </CButton>
-              <CButtonGroup className="float-end me-3">
-                {['Day', 'Month', 'Year'].map((value) => (
-                  <CButton
-                    color="outline-secondary"
-                    key={value}
-                    className="mx-0"
-                    active={value === 'Month'}
-                  >
-                    {value}
-                  </CButton>
-                ))}
-              </CButtonGroup>
-            </CCol>
-          </CRow>
-          <MainChart />
-        </CCardBody>
-        <CCardFooter>
-          <CRow
-            xs={{ cols: 1, gutter: 4 }}
-            sm={{ cols: 2 }}
-            lg={{ cols: 4 }}
-            xl={{ cols: 5 }}
-            className="mb-2 text-center"
-          >
-            {progressExample.map((item, index, items) => (
-              <CCol
-                className={classNames({
-                  'd-none d-xl-block': index + 1 === items.length,
-                })}
-                key={index}
-              >
-                <div className="text-body-secondary">{item.title}</div>
-                <div className="fw-semibold text-truncate">
-                  {item.value} ({item.percent}%)
-                </div>
-                <CProgress thin className="mt-2" color={item.color} value={item.percent} />
-              </CCol>
-            ))}
-          </CRow>
-        </CCardFooter>
-      </CCard>
-      <WidgetsBrand className="mb-4" withCharts />
-      <CRow>
-        <CCol xs>
-          <CCard className="mb-4">
-            <CCardHeader>Traffic {' & '} Sales</CCardHeader>
-            <CCardBody>
-              <CRow>
-                <CCol xs={12} md={6} xl={6}>
-                  <CRow>
-                    <CCol xs={6}>
-                      <div className="border-start border-start-4 border-start-info py-1 px-3">
-                        <div className="text-body-secondary text-truncate small">New Clients</div>
-                        <div className="fs-5 fw-semibold">9,123</div>
-                      </div>
-                    </CCol>
-                    <CCol xs={6}>
-                      <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
-                        <div className="text-body-secondary text-truncate small">
-                          Recurring Clients
-                        </div>
-                        <div className="fs-5 fw-semibold">22,643</div>
-                      </div>
-                    </CCol>
-                  </CRow>
-                  <hr className="mt-0" />
-                  {progressGroupExample1.map((item, index) => (
-                    <div className="progress-group mb-4" key={index}>
-                      <div className="progress-group-prepend">
-                        <span className="text-body-secondary small">{item.title}</span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <CProgress thin color="info" value={item.value1} />
-                        <CProgress thin color="danger" value={item.value2} />
-                      </div>
-                    </div>
-                  ))}
-                </CCol>
-                <CCol xs={12} md={6} xl={6}>
-                  <CRow>
-                    <CCol xs={6}>
-                      <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
-                        <div className="text-body-secondary text-truncate small">Pageviews</div>
-                        <div className="fs-5 fw-semibold">78,623</div>
-                      </div>
-                    </CCol>
-                    <CCol xs={6}>
-                      <div className="border-start border-start-4 border-start-success py-1 px-3 mb-3">
-                        <div className="text-body-secondary text-truncate small">Organic</div>
-                        <div className="fs-5 fw-semibold">49,123</div>
-                      </div>
-                    </CCol>
-                  </CRow>
-
-                  <hr className="mt-0" />
-
-                  {progressGroupExample2.map((item, index) => (
-                    <div className="progress-group mb-4" key={index}>
-                      <div className="progress-group-header">
-                        <CIcon className="me-2" icon={item.icon} size="lg" />
-                        <span>{item.title}</span>
-                        <span className="ms-auto fw-semibold">{item.value}%</span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <CProgress thin color="warning" value={item.value} />
-                      </div>
-                    </div>
-                  ))}
-
-                  <div className="mb-5"></div>
-
-                  {progressGroupExample3.map((item, index) => (
-                    <div className="progress-group" key={index}>
-                      <div className="progress-group-header">
-                        <CIcon className="me-2" icon={item.icon} size="lg" />
-                        <span>{item.title}</span>
-                        <span className="ms-auto fw-semibold">
-                          {item.value}{' '}
-                          <span className="text-body-secondary small">({item.percent}%)</span>
-                        </span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <CProgress thin color="success" value={item.percent} />
-                      </div>
-                    </div>
-                  ))}
-                </CCol>
-              </CRow>
-
-              <br />
-
-              <CTable align="middle" className="mb-0 border" hover responsive>
-                <CTableHead className="text-nowrap">
-                  <CTableRow>
-                    <CTableHeaderCell className="bg-body-tertiary text-center">
-                      <CIcon icon={cilPeople} />
-                    </CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary">User</CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary text-center">
-                      Country
-                    </CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary">Usage</CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary text-center">
-                      Payment Method
-                    </CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary">Activity</CTableHeaderCell>
-                  </CTableRow>
-                </CTableHead>
-                <CTableBody>
-                  {tableExample.map((item, index) => (
-                    <CTableRow v-for="item in tableItems" key={index}>
-                      <CTableDataCell className="text-center">
-                        <CAvatar size="md" src={item.avatar.src} status={item.avatar.status} />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div>{item.user.name}</div>
-                        <div className="small text-body-secondary text-nowrap">
-                          <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
-                          {item.user.registered}
-                        </div>
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.country.flag} title={item.country.name} />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="d-flex justify-content-between text-nowrap">
-                          <div className="fw-semibold">{item.usage.value}%</div>
-                          <div className="ms-3">
-                            <small className="text-body-secondary">{item.usage.period}</small>
-                          </div>
-                        </div>
-                        <CProgress thin color={item.usage.color} value={item.usage.value} />
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.payment.icon} />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="small text-body-secondary text-nowrap">Last login</div>
-                        <div className="fw-semibold text-nowrap">{item.activity}</div>
-                      </CTableDataCell>
-                    </CTableRow>
-                  ))}
-                </CTableBody>
-              </CTable>
-            </CCardBody>
-          </CCard>
-        </CCol>
-      </CRow> */}
     </>
   )
 }
