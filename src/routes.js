@@ -1,6 +1,7 @@
 import React from 'react'
 // import BgRemover from './components/BgRemover'
 import { exact } from 'prop-types'
+import OCR from './components/Tools/OCR'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -59,6 +60,7 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', element: Dashboard, exact: true },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/cropper', name: 'BgRemover', element: BgRemover, exact: true },
+  { path: '/read', name: 'OCR', element: OCR, exact: true },
   { path: '/solidity_auditor', name: 'Auditor', element: Auditor, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },

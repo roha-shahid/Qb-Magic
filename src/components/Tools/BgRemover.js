@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { cilPlus } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
+import { removeBg } from '../../api/api';
+
 
 const BgRemover = () => {
   const [file, setFile] = useState(null);
@@ -51,11 +53,20 @@ const BgRemover = () => {
     formData.append('color_option', colorOption);
 
     try {
-      const response = await axios.post('http://46.250.225.64:4000/cropper/', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      // const response = await axios.post('http://46.250.225.64:4000/cropper/', formData, {
+      //   headers: { 'Content-Type': 'multipart/form-data' },
+      // });
 
-      if (response.data.cropped_image_url) {
+      const response = await removeBg(formData);
+
+      // if (response.data.cropped_image_url) {
+      //   const fullUrl = `http://46.250.225.64:4000${response.data.cropped_image_url}`;
+      //   setImageUrl(fullUrl); // Set the result image URL
+      // } else {
+      //   setError('Image processing failed.');
+      // }
+
+      if (response.cropped_image_url) {
         const fullUrl = `http://46.250.225.64:4000${response.data.cropped_image_url}`;
         setImageUrl(fullUrl); // Set the result image URL
       } else {

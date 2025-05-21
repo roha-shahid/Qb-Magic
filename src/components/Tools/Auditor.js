@@ -4,6 +4,7 @@ import { cilPlus } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { CButton } from '@coreui/react'
 import jsPDF from 'jspdf'
+import { auditReport } from '../../api/api'
 
 const Auditor = () => {
   const [file, setFile] = useState(null)
@@ -47,10 +48,12 @@ const Auditor = () => {
     formData.append('file', file)
 
     try {
-      const response = await axios.post('http://192.168.100.4:8000/solidity_auditor/', formData)
+      // const response = await axios.post('http://46.250.225.64:4000/solidity_auditor/', formData)
 
-      const { audit_text, pdf_base64, filename } = response.data
+      const response = await auditReport(formData)
+      // const { audit_text, pdf_base64, filename } = response.data
 
+      const { audit_text, pdf_base64, filename } = response
       // Decode base64 to Blob
       const byteCharacters = atob(pdf_base64)
       const byteArray = new Uint8Array(byteCharacters.length)
@@ -117,7 +120,7 @@ const Auditor = () => {
             <div className="result-section container-fluid mt-4">
               <div className="row">
                 {/* Audit Text Summary */}
-                <div className="col-md-6 mb-4 d-flex flex-column">
+                <div className="col-md-12 mb-2 d-flex justify-content-center">
                   {showToast && (
                     <div
                       className="toast show m-3"
@@ -129,15 +132,8 @@ const Auditor = () => {
                       <div className="toast-body">Audit text copied to clipboard.</div>
                     </div>
                   )}
-                   <div
-                      className="toast show m-3"
-                      role="alert"
-                      aria-live="assertive"
-                      aria-atomic="true"
-                      style={{ zIndex: 9999 }}
-                    >
-                      <div className="toast-body">Audit text copied to clipboard.</div>
-                    </div>
+                </div>
+                <div className="col-md-6 mb-4 d-flex flex-column">
                   <h5 className="text-start">Audit Summary (Click to Copy)</h5>
                   <div
                     className="flex-grow-1 overflow-auto"
